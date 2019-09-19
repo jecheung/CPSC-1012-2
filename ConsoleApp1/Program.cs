@@ -7,7 +7,7 @@ Output:         Future value, investmnet amount, annual interest rate, compounds
 
 Author:         Jordan Errol Cheung
 
-Last modified:  2019.09.18
+Last modified:  2019.09.19
 */
 
 using System;
@@ -51,8 +51,8 @@ namespace ConsoleApp1
             invested = principalAmount * Math.Pow((1 + rateCompound),compoundY);
             
             Console.WriteLine($"\nFuture Value is {invested:c}");
-            Console.WriteLine($"Investment amount: {principalAmount:c0}");
-            Console.WriteLine($"Annual Interest Rate: {annualIR}%");
+            Console.WriteLine($"Investment amount: {principalAmount:c2}");
+            Console.WriteLine($"Annual Interest Rate: {annualIR:n1}%");
             Console.WriteLine($"Compounds per year: {compoundP}");
         }
     }
