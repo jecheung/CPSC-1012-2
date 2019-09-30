@@ -54,8 +54,9 @@ namespace CorePortfolio02_JordanCheung
                 Console.WriteLine("Invalid Input");
 
             difference = estimatedFT - actualFT;
+            //Console.WriteLine($"{difference}{acceptError}");
             //fix this it is going pass the first if
-            if (difference >= acceptError && difference <= acceptError)
+            if (Math.Abs(difference) <= acceptError)
                 Console.WriteLine("Estimated time is acceptable");
             else if (difference > acceptError){
                 estimatedTime = difference - acceptError;
