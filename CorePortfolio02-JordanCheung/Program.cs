@@ -7,7 +7,7 @@ Output:         Estimated time acceptability or estimated time too large or smal
 
 Author:         Jordan Errol Cheung
 
-Last modified:  2019.09.26
+Last modified:  2019.10.10
 */
 
 using System;
@@ -29,7 +29,7 @@ namespace CorePortfolio02_JordanCheung
 
             int estimatedFT, actualFT, difference, acceptError = 0, estimatedTime;
 
-            Console.Write("Enter estimated flight time in minutes: ");
+            Console.Write("\nEnter estimated flight time in minutes: ");
             estimatedFT = int.Parse(Console.ReadLine());
             Console.Write("Enter actual flight time in minutes: ");
             actualFT = int.Parse(Console.ReadLine());
