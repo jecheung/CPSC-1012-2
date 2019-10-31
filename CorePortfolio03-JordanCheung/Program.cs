@@ -18,17 +18,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace CorePortfolio03_JordanCheung
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             Console.WriteLine("--------------------------");
             Console.WriteLine("| Slot Machine Simulator |");
             Console.WriteLine("--------------------------");
-            Console.WriteLine("This program simulators a slot machine.");
+            Console.WriteLine("This program simulators a slot machine.\n");
 
             double amount = 0;
             double net = 0, totalWon = 0, totalDeposited = 0;
@@ -36,6 +38,8 @@ namespace CorePortfolio03_JordanCheung
             string slot1 = "", slot2 = " ", slot3 = " ";
             string msg = "", playAgain = "yes";
             bool sessionDone = false;
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
             
             do {
                 Console.Write("Enter the amount to deposit into the slot machine: ");
@@ -111,7 +115,7 @@ namespace CorePortfolio03_JordanCheung
                             break;
                     }
                     Console.WriteLine($"{slot1} {slot2} {slot3}");
-                    totalDeposited = totalDeposited + amount;
+                    
                     if (slot1 == slot2 && slot1 == slot3)
                     {
                         winAmount = amount * 3;
@@ -146,32 +150,20 @@ namespace CorePortfolio03_JordanCheung
                             sessionDone = false;
                         }
                     }while (sessionDone != true);
-                    
-                    
-
 
                 }
                 else{
                     Console.WriteLine($"\"{amount}\" is not a valid amount. Try again.");
                 }
                
-                
-
-                
             }while (playAgain != "no");
+            string formatted = string.Format(culture, "{0:C2}", net);
 
             Console.WriteLine($"Total amount desposited: {totalDeposited:c}");
             Console.WriteLine($"Total amount won: {totalWon:c}");
-            Console.WriteLine($"Net gain/loss total: {net:c}");
-                //need to find a easier way to random the numbers
-                //ask for play again everytime after the play, error messages, fix net, fix calculations
-                
+            Console.WriteLine($"Net gain/loss total: {formatted}");      
         }
             
 
     }
 }
-/* if (amount == 0){
-                        Console.Write("Do you want to play again (yes|no)? ");
-                        playAgain = Console.ReadLine();
-                    }*/
