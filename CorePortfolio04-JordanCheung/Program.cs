@@ -6,14 +6,13 @@ Purpose:        Have to menu to allow the user to select one of th two games to 
                 players turn. If the player rolles 2 - 6 then they can either ROLL AGAIN or HOLD(the sum of all rolls is added to the player's score) then its next turn. The computer should play according
                 to the rules, keeping rolling when its is the computer's turn until it has accumulated 10 or more points then hold. If the computer wins or rolls a 1 then the turn ends immediately. Human should roll first.
 
-Input:          Amount of money to enter into the slot machine
+Input:          menu number of choice, game of craps: enter bet and y/n to play again. Game of Pig: enter point total to play for, enter r/h for roll or hold
 
-Output:         3 words from the list: Cherries, Oranges, Plums, Bells, Melons, Bars. Message if words match and amount of money won, total amount deposited, total amount won, net gain/loss total
-                playing again message
+Output:         Menu: the game. Game of Craps: The outcome of the two dice rolls, your point, how much you win/lose, net winning. Game of Pig: one die outcome, turn score, total points, computers turn.  
 
 Author:         Jordan Errol Cheung
 
-Last modified:  2019.11.04
+Last modified:  2019.11.05
 */
 using System;
 using System.Collections.Generic;
@@ -25,8 +24,7 @@ namespace CorePortfolio04_JordanCheung
 {
     class Program
     {
-        
-        static void Main(string[] args)
+        static void DisplayMenu()
         {
             Console.WriteLine("|-----------------|");
             Console.WriteLine("| CPSC1012 Casino |");
@@ -36,6 +34,45 @@ namespace CorePortfolio04_JordanCheung
             Console.WriteLine("| 0. Exit Program |");
             Console.WriteLine("|-----------------|");
             Console.WriteLine("Enter your menu number choice > ");
+        }
+
+        static int selectMenu()
+        {
+
+            bool invalidInput = true;
+            int choice = 0;
+
+            while (invalidInput)
+            {
+                try
+                {
+                    Console.WriteLine("Enter your menu number choice > ");
+                    choice = int.Parse(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            GameofCraps();
+                            break;
+                        case 2:
+                            GameofPig();
+                        default:
+                            Console.WriteLine("Error: Invalid Input.");
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }                
+            }
+            return num;
+        }
+
+        static void Main(string[] args)
+        {
+            DisplayMenu();
             
         }
     }
