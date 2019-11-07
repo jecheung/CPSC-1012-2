@@ -33,47 +33,94 @@ namespace CorePortfolio04_JordanCheung
             Console.WriteLine("| 2. Play Pig     |");
             Console.WriteLine("| 0. Exit Program |");
             Console.WriteLine("|-----------------|");
-            Console.WriteLine("Enter your menu number choice > ");
         }
 
-        static int selectMenu()
+        static void selectMenu()
         {
-
             bool invalidInput = true;
-            int choice = 0;
-
-            while (invalidInput)
+            string choice = " ";
+            while (invalidInput) //keeps the game going
             {
                 try
                 {
-                    Console.WriteLine("Enter your menu number choice > ");
-                    choice = int.Parse(Console.ReadLine());
+                    DisplayMenu();
+                    Console.Write("Enter your menu number choice > ");
+                    choice = Console.ReadLine();
                     switch (choice)
                     {
-                        case 0:
+                        case "0":
+                            Console.WriteLine("Good-bye and thanks for coming to the CPSC1012 casino.");
+                            invalidInput = false;
                             break;
-                        case 1:
+                        case "1":
                             GameofCraps();
                             break;
-                        case 2:
+                        case "2":
                             GameofPig();
+                            break;
                         default:
-                            Console.WriteLine("Error: Invalid Input.");
-
+                            Console.WriteLine($"{choice} is not a valid menu choice. Try again."); 
+                            break;
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error: {ex.Message}");
-                }                
+                }
             }
-            return num;
+        }
+
+
+
+        static void GameofCraps()
+        {
+
+            Console.WriteLine("|---------------|");
+            Console.WriteLine("| Game of Craps |");
+            Console.WriteLine("|---------------|\n");
+
+            string playAgain = "y";
+            //string msg = " ";
+
+            do {
+                Random rnd = new Random(); //create random number
+                int die1 = rnd.Next(1, 7); //first dice roll
+                int die2 = rnd.Next(1, 7); //second dice roll
+                int sum = die1 + die2;
+                int bet = 0;
+
+                bool sessionDone = false;
+                Console.Write("Enter amount to bet: ");
+                bet = int.Parse(Console.ReadLine());
+                Console.WriteLine($"You rolled {die1} + {die2} = {sum}");
+                do{
+                    Console.Write("Do you want to play again (y/n): ");
+                    playAgain = Console.ReadLine();
+                    if ((playAgain == "n") || (playAgain == "y")){
+                        sessionDone = true;
+                    }
+                    else {
+                        Console.WriteLine($"\"{playAgain}\" is not a valid choice. Try again.");
+                        sessionDone = false;
+                    }
+                }while (sessionDone != true);
+
+            }while (playAgain != "n");
+        }
+
+
+        static void  GameofPig()
+        {
+            Console.WriteLine("|-------------|");
+            Console.WriteLine("| Game of Pig |");
+            Console.WriteLine("|-------------|\n");
         }
 
         static void Main(string[] args)
         {
-            DisplayMenu();
-            
+
+            selectMenu(); //starts the menu
+
         }
     }
 }
