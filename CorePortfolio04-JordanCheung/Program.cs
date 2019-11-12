@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace CorePortfolio04_JordanCheung
 {
@@ -70,29 +71,74 @@ namespace CorePortfolio04_JordanCheung
             }
         }
 
+        static int DiceRoll()
+        {
+            Random rnd = new Random(); //create random number
+            int die = rnd.Next(1, 7); //first dice roll
+            return die;
+        }
 
 
         static void GameofCraps()
         {
-
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
             Console.WriteLine("|---------------|");
             Console.WriteLine("| Game of Craps |");
             Console.WriteLine("|---------------|\n");
 
             string playAgain = "y";
             //string msg = " ";
-
+            double netWin = 0;
             do {
                 Random rnd = new Random(); //create random number
-                int die1 = rnd.Next(1, 7); //first dice roll
-                int die2 = rnd.Next(1, 7); //second dice roll
+                int die1 = DiceRoll(); //first dice roll
+                int die2 = DiceRoll(); //second dice roll
                 int sum = die1 + die2;
-                int bet = 0;
+                double bet = 0;
+                int newsum = 0;
 
                 bool sessionDone = false;
                 Console.Write("Enter amount to bet: ");
-                bet = int.Parse(Console.ReadLine());
+                bet = double.Parse(Console.ReadLine());
                 Console.WriteLine($"You rolled {die1} + {die2} = {sum}");
+                if ((sum == 7) || (sum == 11)) {
+                    Console.WriteLine($"You win {bet:c}");
+                    netWin+=bet;
+                }
+                else if ((sum == 2) || (sum == 3) ||(sum == 12)) {
+                    Console.WriteLine($"You lost {bet:c}");
+                    netWin-=bet;
+                }
+                else{
+                    int point = sum;
+                    int die3 = DiceRoll(); //first dice roll
+                    int die4 = DiceRoll(); //second dice roll
+                    newsum = die3 + die4;
+                    Console.WriteLine($"Point is {sum}");
+                    Console.WriteLine($"You rolled {die3} + {die4} = {newsum}");
+
+                    while ((point != newsum) || (newsum != 7)){
+                        if (newsum == point){
+                            Console.WriteLine($"You win {bet:c}");
+                            netWin+=bet;
+                            break;
+                        }
+                        else if (newsum == 7){
+                            Console.WriteLine($"You lost {bet:c}");
+                            netWin-=bet;
+                            break;
+                        }
+                        int die5 = DiceRoll(); //first dice roll
+                        int die6 = DiceRoll(); //second dice roll
+
+                        newsum = die5 + die6;
+                        Console.WriteLine($"You rolled {die5} + {die6} = {newsum}");
+
+                    }
+
+                }
+
                 do{
                     Console.Write("Do you want to play again (y/n): ");
                     playAgain = Console.ReadLine();
@@ -106,6 +152,8 @@ namespace CorePortfolio04_JordanCheung
                 }while (sessionDone != true);
 
             }while (playAgain != "n");
+            string formatted = string.Format(culture, "{0:C2}", netWin);
+            Console.WriteLine($"Your net winning is {formatted}");
         }
 
 
@@ -118,7 +166,7 @@ namespace CorePortfolio04_JordanCheung
 
         static void Main(string[] args)
         {
-
+            
             selectMenu(); //starts the menu
 
         }
