@@ -112,13 +112,28 @@ namespace CorePortfolio04_JordanCheung
                 }
                 else{
                     int point = sum;
-                    int die3 = DiceRoll(); //first dice roll
-                    int die4 = DiceRoll(); //second dice roll
-                    newsum = die3 + die4;
-                    Console.WriteLine($"Point is {sum}");
-                    Console.WriteLine($"You rolled {die3} + {die4} = {newsum}");
 
-                    while ((point != newsum) || (newsum != 7)){
+                    Console.WriteLine($"Point is {sum}");
+                    bool stopRoll = false;
+
+                    do {
+                        int die3 = DiceRoll(); //first dice roll
+                        int die4 = DiceRoll(); //second dice roll
+                        newsum = die3 + die4;
+                        Console.WriteLine($"You rolled {die3} + {die4} = {newsum}");
+                        if (newsum == point){
+                            Console.WriteLine($"You win {bet:c}");
+                            netWin+=bet;
+                            stopRoll = true;
+                        }
+                        else if (newsum == 7){
+                            Console.WriteLine($"You lost {bet:c}");
+                            netWin-=bet;
+                            stopRoll = true;
+                        }
+                    }while(stopRoll != true);
+
+                /*    while ((point != newsum) || (newsum != 7)){
                         if (newsum == point){
                             Console.WriteLine($"You win {bet:c}");
                             netWin+=bet;
@@ -135,7 +150,7 @@ namespace CorePortfolio04_JordanCheung
                         newsum = die5 + die6;
                         Console.WriteLine($"You rolled {die5} + {die6} = {newsum}");
 
-                    }
+                    } */
 
                 }
 
