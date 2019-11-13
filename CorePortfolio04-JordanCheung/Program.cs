@@ -73,7 +73,7 @@ namespace CorePortfolio04_JordanCheung
 
         static int DiceRoll(Random rnd)
         {
-            int die = rnd.Next(1, 7); //first dice roll
+            int die = rnd.Next(1, 7); //pass rnd through to roll the dice
             return die;
         }
 
@@ -87,7 +87,6 @@ namespace CorePortfolio04_JordanCheung
             Console.WriteLine("|---------------|\n");
 
             string playAgain = "y";
-            //string msg = " ";
             double netWin = 0;
             Random rnd = new Random(); //create random number
             do {
@@ -132,26 +131,6 @@ namespace CorePortfolio04_JordanCheung
                             stopRoll = true;
                         }
                     }while(stopRoll != true);
-
-                /*    while ((point != newsum) || (newsum != 7)){
-                        if (newsum == point){
-                            Console.WriteLine($"You win {bet:c}");
-                            netWin+=bet;
-                            break;
-                        }
-                        else if (newsum == 7){
-                            Console.WriteLine($"You lost {bet:c}");
-                            netWin-=bet;
-                            break;
-                        }
-                        int die5 = DiceRoll(); //first dice roll
-                        int die6 = DiceRoll(); //second dice roll
-
-                        newsum = die5 + die6;
-                        Console.WriteLine($"You rolled {die5} + {die6} = {newsum}");
-
-                    } */
-
                 }
 
                 do{
@@ -172,81 +151,71 @@ namespace CorePortfolio04_JordanCheung
         }
 
 
+        static void ComputerTurn()
+        {
+            Console.WriteLine("Its the computers turn.");
+        }
+
         static void  GameofPig()
         {
             Console.WriteLine("|-------------|");
             Console.WriteLine("| Game of Pig |");
             Console.WriteLine("|-------------|\n");
-
+            int point = 0;
+            Console.Write("Enter the point total to play for: ");
+            point = int.Parse(Console.ReadLine());
             string playAgain = "y";
-            //string msg = " ";
-            double netWin = 0;
             Random rnd = new Random(); //create random number
+            bool end = false;
+            int playerPoints = 0;
+            //int compPoints = 0;
             do {
 
-                int die1 = DiceRoll(rnd); //first dice roll
-                int die2 = DiceRoll(rnd); //second dice roll
-                int sum = die1 + die2;
-                double bet = 0;
-                int newsum = 0;
-
+                int die = DiceRoll(rnd); //first dice roll
                 bool sessionDone = false;
-                Console.Write("Enter amount to bet: ");
-                bet = double.Parse(Console.ReadLine());
-                Console.WriteLine($"You rolled {die1} + {die2} = {sum}");
-                if ((sum == 7) || (sum == 11)) {
-                    Console.WriteLine($"You win {bet:c}");
-                    netWin+=bet;
-                }
-                else if ((sum == 2) || (sum == 3) ||(sum == 12)) {
-                    Console.WriteLine($"You lost {bet:c}");
-                    netWin-=bet;
-                }
-                else{
-                    int point = sum;
+                Console.WriteLine($"You rolled a {die}");
 
-                    Console.WriteLine($"Point is {sum}");
-                    bool stopRoll = false;
-
-                    do {
-                        int die3 = DiceRoll(rnd); //first dice roll
-                        int die4 = DiceRoll(rnd); //second dice roll
-                        newsum = die3 + die4;
-                        Console.WriteLine($"You rolled {die3} + {die4} = {newsum}");
-                        if (newsum == point){
-                            Console.WriteLine($"You win {bet:c}");
-                            netWin+=bet;
-                            stopRoll = true;
-                        }
-                        else if (newsum == 7){
-                            Console.WriteLine($"You lost {bet:c}");
-                            netWin-=bet;
-                            stopRoll = true;
-                        }
-                    }while(stopRoll != true);
-
-                /*    while ((point != newsum) || (newsum != 7)){
-                        if (newsum == point){
-                            Console.WriteLine($"You win {bet:c}");
-                            netWin+=bet;
-                            break;
-                        }
-                        else if (newsum == 7){
-                            Console.WriteLine($"You lost {bet:c}");
-                            netWin-=bet;
-                            break;
-                        }
-                        int die5 = DiceRoll(); //first dice roll
-                        int die6 = DiceRoll(); //second dice roll
-
-                        newsum = die5 + die6;
-                        Console.WriteLine($"You rolled {die5} + {die6} = {newsum}");
-
-                    } */
+                switch(die)
+                {
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:                
+                        playerPoints+=die;
+                        do{
+                            Console.Write("Enter r to roll or h to hold (r/h): ");
+                            playAgain = Console.ReadLine();
+                            if (playAgain == "r"){
+                                sessionDone = true;
+                            }
+                            else if (playAgain == "h"){
+                                ComputerTurn();
+                                sessionDone = true;
+                                end = true;
+                            }
+                            else {
+                                Console.WriteLine($"\"{playAgain}\" is not a valid choice. Try again.");
+                                sessionDone = false;
+                            }
+                        }while (sessionDone != true);
+                        break;
 
                 }
 
-                do{
+            }while (end != true);
+
+           /* while (true){
+                int die = DiceRoll(rnd); //first dice roll
+                Console.WriteLine($"You rolled a {die}");
+                if (die > 1){
+                    
+                }
+                Console.Write("Enter r to roll or h to hold (r/h): ");
+                playAgain = Console.ReadLine();
+            }
+
+             /*   do{
                     Console.Write("Do you want to play again (y/n): ");
                     playAgain = Console.ReadLine();
                     if ((playAgain == "n") || (playAgain == "y")){
@@ -260,7 +229,7 @@ namespace CorePortfolio04_JordanCheung
 
             }while (playAgain != "n");
             string formatted = string.Format(culture, "{0:C2}", netWin);
-            Console.WriteLine($"Your net winning is {formatted}");
+            Console.WriteLine($"Your net winning is {formatted}");*/
         }
 
         static void Main(string[] args)
