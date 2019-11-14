@@ -151,9 +151,33 @@ namespace CorePortfolio04_JordanCheung
         }
 
 
-        static void ComputerTurn()
+        static int ComputerTurn(int computersPoints, int point)
         {
+            Random rnd = new Random();
+            int points = 0;
+            bool quit = false;
             Console.WriteLine("Its the computers turn.");
+            do {
+                int die = DiceRoll(rnd);
+                Console.WriteLine($"Computer rolled a {die}");
+                switch(die)
+                {
+                    case 1:
+                        points = 0;
+                        Console.WriteLine($"Computer turn total is {points}");
+                        quit = false;
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:                
+                        points+=die;
+                        break;
+                }
+            }while((points <= 10)||(quit != true));
+
+            return points;
         }
 
         static void  GameofPig()
@@ -168,15 +192,20 @@ namespace CorePortfolio04_JordanCheung
             Random rnd = new Random(); //create random number
             bool end = false;
             int playerPoints = 0;
-            //int compPoints = 0;
+            int totalPlayerPoints = 0;
+            int compPoints = 0;
+            bool sessionDone = false;
+
             do {
-
-                int die = DiceRoll(rnd); //first dice roll
-                bool sessionDone = false;
+                int die = DiceRoll(rnd);
                 Console.WriteLine($"You rolled a {die}");
-
                 switch(die)
                 {
+                    case 1:
+                        playerPoints = 0;
+                        Console.WriteLine($"Your turn score is {playerPoints}");
+                        compPoints+=ComputerTurn(compPoints,point);
+                        break;
                     case 2:
                     case 3:
                     case 4:
@@ -190,7 +219,8 @@ namespace CorePortfolio04_JordanCheung
                                 sessionDone = true;
                             }
                             else if (playAgain == "h"){
-                                ComputerTurn();
+                                totalPlayerPoints+=playerPoints;
+                                compPoints+=ComputerTurn(compPoints,point);
                                 sessionDone = true;
                                 end = true;
                             }
@@ -200,10 +230,11 @@ namespace CorePortfolio04_JordanCheung
                             }
                         }while (sessionDone != true);
                         break;
-
                 }
+            }while((totalPlayerPoints < point) || (compPoints < point));
 
-            }while (end != true);
+        }
+
 
            /* while (true){
                 int die = DiceRoll(rnd); //first dice roll
@@ -230,7 +261,7 @@ namespace CorePortfolio04_JordanCheung
             }while (playAgain != "n");
             string formatted = string.Format(culture, "{0:C2}", netWin);
             Console.WriteLine($"Your net winning is {formatted}");*/
-        }
+      
 
         static void Main(string[] args)
         {
