@@ -12,7 +12,7 @@ Output:         Menu: the game. Game of Craps: The outcome of the two dice rolls
 
 Author:         Jordan Errol Cheung
 
-Last modified:  2019.11.05
+Last modified:  2019.11.14
 */
 using System;
 using System.Collections.Generic;
@@ -82,6 +82,7 @@ namespace CorePortfolio04_JordanCheung
         {
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             culture.NumberFormat.CurrencyNegativePattern = 1;
+
             Console.WriteLine("|---------------|");
             Console.WriteLine("| Game of Craps |");
             Console.WriteLine("|---------------|\n");
@@ -89,18 +90,20 @@ namespace CorePortfolio04_JordanCheung
             string playAgain = "y";
             double netWin = 0;
             Random rnd = new Random(); //create random number
-            do {
 
+            do {
                 int die1 = DiceRoll(rnd); //first dice roll
                 int die2 = DiceRoll(rnd); //second dice roll
                 int sum = die1 + die2;
                 double bet = 0;
                 int newsum = 0;
-
                 bool sessionDone = false;
+
                 Console.Write("Enter amount to bet: ");
                 bet = double.Parse(Console.ReadLine());
+
                 Console.WriteLine($"You rolled {die1} + {die2} = {sum}");
+
                 if ((sum == 7) || (sum == 11)) {
                     Console.WriteLine($"You win {bet:c}");
                     netWin+=bet;
@@ -119,6 +122,7 @@ namespace CorePortfolio04_JordanCheung
                         int die3 = DiceRoll(rnd); //first dice roll
                         int die4 = DiceRoll(rnd); //second dice roll
                         newsum = die3 + die4;
+
                         Console.WriteLine($"You rolled {die3} + {die4} = {newsum}");
                         if (newsum == point){
                             Console.WriteLine($"You win {bet:c}");
@@ -146,6 +150,7 @@ namespace CorePortfolio04_JordanCheung
                 }while (sessionDone != true);
 
             }while (playAgain != "n");
+
             string formatted = string.Format(culture, "{0:C2}", netWin);
             Console.WriteLine($"Your net winning is {formatted}");
         }
@@ -154,18 +159,21 @@ namespace CorePortfolio04_JordanCheung
         static int ComputerTurn(int computersPoints, int point)
         {
             Random rnd = new Random();
-            int points = 0;
+            int points = 0;//computers turn points
             bool quit = false;
-            Console.WriteLine("Its the computers turn.");
+
+            Console.WriteLine("\nIts the computers turn.");
+
             do {
                 int die = DiceRoll(rnd);
                 Console.WriteLine($"Computer rolled a {die}");
+
                 switch(die)
                 {
                     case 1:
                         points = 0;
                         Console.WriteLine($"Computer turn total is {points}");
-                        quit = false;
+                        quit = true;
                         break;
                     case 2:
                     case 3:
@@ -175,9 +183,15 @@ namespace CorePortfolio04_JordanCheung
                         points+=die;
                         break;
                 }
-            }while((points <= 10)||(quit != true));
+            }while((points < 10) && (quit != true) && (points < point));
 
-            return points;
+            computersPoints+=points;
+            if (points != 0 && computersPoints < point){
+                Console.WriteLine($"Computer HOLD");
+                Console.WriteLine($"Computer turn total is {points}");
+            }
+            
+            return computersPoints;
         }
 
         static void  GameofPig()
@@ -185,26 +199,49 @@ namespace CorePortfolio04_JordanCheung
             Console.WriteLine("|-------------|");
             Console.WriteLine("| Game of Pig |");
             Console.WriteLine("|-------------|\n");
+
             int point = 0;
             Console.Write("Enter the point total to play for: ");
             point = int.Parse(Console.ReadLine());
-            string playAgain = "y";
+
+            string playAgain = "y"; //reroll r/h
             Random rnd = new Random(); //create random number
             bool end = false;
             int playerPoints = 0;
             int totalPlayerPoints = 0;
             int compPoints = 0;
             bool sessionDone = false;
+            int temp = 0;
 
+            Console.WriteLine("It's your turn.");
             do {
                 int die = DiceRoll(rnd);
                 Console.WriteLine($"You rolled a {die}");
+                
                 switch(die)
                 {
                     case 1:
                         playerPoints = 0;
+                        temp = 0;
                         Console.WriteLine($"Your turn score is {playerPoints}");
-                        compPoints+=ComputerTurn(compPoints,point);
+
+                        if (compPoints >= point)
+                            Console.WriteLine("Computer WIN");
+                        else if (totalPlayerPoints >= point)
+                            Console.WriteLine("You WIN");
+
+                        Console.WriteLine($"\nYour total points: {totalPlayerPoints}");
+                        Console.WriteLine($"Computer total points: {compPoints}");
+                        compPoints = ComputerTurn(compPoints,point);
+
+                        if (compPoints >= point)
+                           Console.WriteLine("Computer WIN");
+                        Console.WriteLine($"\nYour total points: {totalPlayerPoints}");
+                        Console.WriteLine($"Computer total points: {compPoints}");
+
+                        if (compPoints < point)
+                            Console.WriteLine("\nIt's your turn.");
+                        
                         break;
                     case 2:
                     case 3:
@@ -212,62 +249,60 @@ namespace CorePortfolio04_JordanCheung
                     case 5:
                     case 6:                
                         playerPoints+=die;
-                        do{
+                        temp = playerPoints + totalPlayerPoints;
+                        
+                        while ((playerPoints < point) && (compPoints < point) && (temp < point)){
+
                             Console.Write("Enter r to roll or h to hold (r/h): ");
                             playAgain = Console.ReadLine();
                             if (playAgain == "r"){
-                                sessionDone = true;
+                                
+
+                                break;
                             }
                             else if (playAgain == "h"){
+                                Console.WriteLine($"You HOLD");
                                 totalPlayerPoints+=playerPoints;
-                                compPoints+=ComputerTurn(compPoints,point);
-                                sessionDone = true;
-                                end = true;
+                                Console.WriteLine($"Your turn score is {playerPoints}");
+                                
+                                if (totalPlayerPoints >= point)
+                                    Console.WriteLine("You WIN");
+
+                                Console.WriteLine($"\nYour total points: {totalPlayerPoints}");
+                                Console.WriteLine($"Computer total points: {compPoints}");
+                                compPoints = ComputerTurn(compPoints,point);
+                                temp = 0;
+
+                                if (compPoints >= point)
+                                    Console.WriteLine("Computer WIN");
+                                Console.WriteLine($"\nYour total points: {totalPlayerPoints}");
+                                Console.WriteLine($"Computer total points: {compPoints}");
+                                
+                                playerPoints = 0;
+                                if (compPoints < point)
+                                    Console.WriteLine("\nIt's your turn.");
+                                break;
                             }
                             else {
                                 Console.WriteLine($"\"{playAgain}\" is not a valid choice. Try again.");
-                                sessionDone = false;
+
                             }
-                        }while (sessionDone != true);
+                        }
+                        if (temp >= point){
+                            Console.WriteLine($"Your turn score is {temp}");
+                            Console.WriteLine("You WIN");
+                            Console.WriteLine($"\nYour total points: {temp}");
+                            Console.WriteLine($"Computer total points: {compPoints}");
+                        }
                         break;
                 }
-            }while((totalPlayerPoints < point) || (compPoints < point));
+            }while((totalPlayerPoints < point) && (compPoints < point) && (temp < point));
 
         }
-
-
-           /* while (true){
-                int die = DiceRoll(rnd); //first dice roll
-                Console.WriteLine($"You rolled a {die}");
-                if (die > 1){
-                    
-                }
-                Console.Write("Enter r to roll or h to hold (r/h): ");
-                playAgain = Console.ReadLine();
-            }
-
-             /*   do{
-                    Console.Write("Do you want to play again (y/n): ");
-                    playAgain = Console.ReadLine();
-                    if ((playAgain == "n") || (playAgain == "y")){
-                        sessionDone = true;
-                    }
-                    else {
-                        Console.WriteLine($"\"{playAgain}\" is not a valid choice. Try again.");
-                        sessionDone = false;
-                    }
-                }while (sessionDone != true);
-
-            }while (playAgain != "n");
-            string formatted = string.Format(culture, "{0:C2}", netWin);
-            Console.WriteLine($"Your net winning is {formatted}");*/
       
-
         static void Main(string[] args)
         {
-            
             selectMenu(); //starts the menu
-
         }
     }
 }
