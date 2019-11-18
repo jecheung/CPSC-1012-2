@@ -53,23 +53,23 @@ namespace CorePortfolio05_JordanCheung
                     switch (choice)
                     {
                         case "0":
-                            Console.WriteLine("Good-bye and thanks for coming to the CPSC1012 casino.");
+                            Console.WriteLine("Good-bye and thanks for coming to the CPSC1012 Lotto Centre.");
                             invalidInput = false;
                             break;
                         case "1":
-                            
+                            Console.WriteLine("The current Lotto MAX winning numbers are: ");
                             break;
                         case "2":
-                            
+                            Console.WriteLine("The current Lotto 6/49 winning numbers are: ");
                             break;
                         case "3":
-
+                            Console.WriteLine("The current Lotto EXTRA winning numbers are: ");
                             break;
                         case "4":
-
+                            Console.WriteLine("Play Lotto MAX");
                             break;
                         case "5":
-
+                            Console.WriteLine("Play Lotto 6/49");
                             break;
                         default:
                             Console.WriteLine($"{choice} is not a valid menu choice. Try again.");
