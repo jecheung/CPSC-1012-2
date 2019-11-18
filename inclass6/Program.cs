@@ -95,3 +95,15 @@ namespace inclass6
         }
     }
 }
+/*
+static void DrawRow(int rows, char drawChar)
+{
+    for (int i = 1; i <= rows; i++)
+    {
+        if (i == 1 || i == rows)
+            Console.Write($"|");
+        else
+            Console.Write($"{drawChar}");
+    }
+}
+*/
