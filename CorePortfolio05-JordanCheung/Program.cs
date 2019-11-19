@@ -82,6 +82,48 @@ namespace CorePortfolio05_JordanCheung
                 }
             }
         }
+
+        static void changeLottoMAX()
+        {
+            List<int> lottonumbers = new List<string>();
+            List<int> lottonumbers = new List<string>();
+
+            for 
+
+
+
+
+
+
+            /* int c = 7;
+            int [] numb = new int[c];
+            int [] result = new int[c];
+            DateTime dt = new DateTime();
+            dt = DateTime.Now;
+            Random rnd = new Random(dt.Millisecond);
+            for (int i = 1; i < c; i++)
+            {
+                numb[i] = rnd.Next(1,50);
+            }
+            Array.Sort(numb);
+            int k = 0;
+            int j = 0;
+            for (int i =0; i < c -1; i++)
+            {
+                if (numb[i] == numb[i+1])
+                {
+                    result[k] = numb[i];
+                    lottonumbers[k] = j += 1;
+                }                
+                else
+                {
+                    k += 1;
+                    j = 0;
+                }
+            }
+            for (int i = 0; i < lottonumbers) */
+        }
+
         static void Main(string[] args)
         {
             selectMenu(); //starts the menu
