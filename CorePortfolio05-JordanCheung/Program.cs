@@ -57,6 +57,7 @@ namespace CorePortfolio05_JordanCheung
                             invalidInput = false;
                             break;
                         case "1":
+                            changeLottoMAX()
                             Console.WriteLine("The current Lotto MAX winning numbers are: ");
                             break;
                         case "2":
@@ -87,8 +88,15 @@ namespace CorePortfolio05_JordanCheung
         {
             List<int> lottonumbers = new List<string>();
             List<int> lottonumbers = new List<string>();
-
-            for 
+            dt = DateTime.Now;
+            Random rnd = new Random(dt.Millisecond);
+            int i = 0;
+            while(i < 7)
+            {
+                int randomNumb = rnd.Next(1,51);
+                for (i)
+                if randomNumb
+            }
 
 
 
