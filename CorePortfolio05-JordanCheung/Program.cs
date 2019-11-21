@@ -43,6 +43,11 @@ namespace CorePortfolio05_JordanCheung
         {
             bool invalidInput = true;
             string choice = " ";
+            List<int> lottoMAX = new List<int>();
+            List<int> lotto649 = new List<int>();
+            lottoMAX = generateMAX();
+            lotto649 = generate649();
+            lottoEXTRA = generateEXTRA();
             while (invalidInput) //keeps the game going
             {
                 try
@@ -50,6 +55,7 @@ namespace CorePortfolio05_JordanCheung
                     DisplayMenu();
                     Console.Write("Enter your menu number choice > ");
                     choice = Console.ReadLine();
+                    Console.Write("\n");
                     switch (choice)
                     {
                         case "0":
@@ -57,11 +63,19 @@ namespace CorePortfolio05_JordanCheung
                             invalidInput = false;
                             break;
                         case "1":
-                            changeLottoMAX()
-                            Console.WriteLine("The current Lotto MAX winning numbers are: ");
+                            
+                            lottoMAX = changeLottoMAX(lottoMAX);
+                            
+                        /*    for (int i = 0; i < lottoMAX.Count()-1; i++)
+                            {
+                                Console.Write($"{lottoMAX[i]} ");
+                            }
+                            Console.WriteLine($"(Bonus: {lottoMAX[7]})");*/
+                            
                             break;
                         case "2":
-                            Console.WriteLine("The current Lotto 6/49 winning numbers are: ");
+                            lotto649 = changeLotto649(lotto649);
+                          
                             break;
                         case "3":
                             Console.WriteLine("The current Lotto EXTRA winning numbers are: ");
@@ -83,53 +97,174 @@ namespace CorePortfolio05_JordanCheung
                 }
             }
         }
-
-        static void changeLottoMAX()
+        static List<int> generateEXTRA()
         {
-            List<int> lottonumbers = new List<string>();
-            List<int> lottonumbers = new List<string>();
-            dt = DateTime.Now;
-            Random rnd = new Random(dt.Millisecond);
+            List<int> lottonumbers = new List<int>();
+            Random rnd = new Random();
             int i = 0;
-            while(i < 7)
+            int randomNumb;
+            
+            for(i = 0; i < 7; i++)
             {
-                int randomNumb = rnd.Next(1,51);
-                for (i)
-                if randomNumb
+                randomNumb = rnd.Next(1,10);
+                lottonumbers.Add(randomNumb);
             }
-
-
-
-
-
-
-            /* int c = 7;
-            int [] numb = new int[c];
-            int [] result = new int[c];
-            DateTime dt = new DateTime();
-            dt = DateTime.Now;
-            Random rnd = new Random(dt.Millisecond);
-            for (int i = 1; i < c; i++)
-            {
-                numb[i] = rnd.Next(1,50);
-            }
-            Array.Sort(numb);
-            int k = 0;
-            int j = 0;
-            for (int i =0; i < c -1; i++)
-            {
-                if (numb[i] == numb[i+1])
+            
+            return lottonumbers;
+        }
+        /* FIX THIS */
+        static List<int> changeLottoEXTRA(List<int> Current)
+        {
+            List<int> lottonumbers = new List<int>();
+            Console.Write("The current Lotto EXTRA winning numbers are: ");
+            displayLottoEXTRA(Current);
+            
+                Console.Write("The new Lotto 649 winning numbers are: ");
+                for (int i = 0; i < lottonumbers.Count-1; i++)
                 {
-                    result[k] = numb[i];
-                    lottonumbers[k] = j += 1;
-                }                
-                else
-                {
-                    k += 1;
-                    j = 0;
+                    Console.Write($"{lottonumbers[i]} ");
                 }
+                Console.WriteLine($"(Bonus: {lottonumbers[lottonumbers.Count()-1]})");
+
             }
-            for (int i = 0; i < lottonumbers) */
+            return lottonumbers;
+        }
+
+        static void displayLottoEXTRA(List<int> numbers)
+        {
+            for (int i = 0; i < numbers.Count()-1; i++)
+            {
+                Console.Write($"{numbers[i]}");
+            }
+            Console.WriteLine($"(Bonus: {numbers[numbers.Count()-1]})");
+        }
+
+
+        static List<int> generate649()
+        {
+            List<int> lottonumbers = new List<int>();
+            Random rnd = new Random();
+            int i = 0;
+            int randomNumb;
+            
+            for(i = 0; i < 6; i++)
+            {
+                do {
+                    randomNumb = rnd.Next(1,50);                  
+                }while (lottonumbers.Contains(randomNumb));
+                lottonumbers.Add(randomNumb);
+                
+            }
+            lottonumbers.Sort();
+            do {
+                randomNumb = rnd.Next(1,51);                  
+            }while (lottonumbers.Contains(randomNumb));
+            lottonumbers.Add(randomNumb);
+
+
+            
+            return lottonumbers;
+        }
+
+        static List<int> changeLotto649(List<int> Current)
+        {
+            List<int> lottonumbers = new List<int>();
+            Console.Write("The current Lotto 649 winning numbers are: ");
+            displayLottoMAX(Current);
+            
+            Console.Write("Would you like to generate or enter the winning numbers (g/e): ");
+            string decide = Console.ReadLine();
+            if (decide == "g")
+            {
+                Console.Write("The new Lotto 649 winning numbers are: ");
+                lottonumbers = generate649();
+                displayLottoMAX(lottonumbers);
+            }
+            else if (decide == "e"){
+                for (int i = 1; i < 7; i++)
+                {
+                    Console.Write($"Enter number #{i}: ");
+                    lottonumbers.Add(int.Parse(Console.ReadLine()));
+                }
+                Console.Write("Enter bonus number: ");
+                lottonumbers.Add(int.Parse(Console.ReadLine()));
+                Console.Write("The new Lotto 649 winning numbers are: ");
+                for (int i = 0; i < lottonumbers.Count-1; i++)
+                {
+                    Console.Write($"{lottonumbers[i]} ");
+                }
+                Console.WriteLine($"(Bonus: {lottonumbers[lottonumbers.Count()-1]})");
+
+            }
+            return lottonumbers;
+        }
+
+        static List<int> generateMAX()
+        {
+            List<int> lottonumbers = new List<int>();
+            Random rnd = new Random();
+            int i = 0;
+            int randomNumb;
+            
+            for(i = 0; i < 7; i++)
+            {
+                do {
+                    randomNumb = rnd.Next(1,51);                  
+                }while (lottonumbers.Contains(randomNumb));
+                lottonumbers.Add(randomNumb);
+                
+            }
+            lottonumbers.Sort();
+            do {
+                randomNumb = rnd.Next(1,51);                  
+            }while (lottonumbers.Contains(randomNumb));
+            lottonumbers.Add(randomNumb);
+
+
+            
+            return lottonumbers;
+        }
+
+        static List<int> changeLottoMAX(List<int> Current)
+        {
+            List<int> lottonumbers = new List<int>();
+            Console.Write("The current Lotto MAX winning numbers are: ");
+            displayLottoMAX(Current);
+            
+            Console.Write("Would you like to generate or enter the winning numbers (g/e): ");
+            string decide = Console.ReadLine();
+            if (decide == "g")
+            {
+                Console.Write("The new Lotto MAX winning numbers are: ");
+                lottonumbers = generateMAX();
+                displayLottoMAX(lottonumbers);
+            }
+            else if (decide == "e"){
+                for (int i = 1; i < 8; i++)
+                {
+                    Console.Write($"Enter number #{i}: ");
+                    lottonumbers.Add(int.Parse(Console.ReadLine()));
+                }
+                Console.Write("Enter bonus number: ");
+                lottonumbers.Add(int.Parse(Console.ReadLine()));
+                Console.Write("The new Lotto MAX winning numbers are: ");
+                for (int i = 0; i < lottonumbers.Count-1; i++)
+                {
+                    Console.Write($"{lottonumbers[i]} ");
+                }
+                Console.WriteLine($"(Bonus: {lottonumbers[7]})");
+
+            }
+            return lottonumbers;
+        }
+
+        static void displayLottoMAX(List<int> numbers)
+        {
+            for (int i = 0; i < numbers.Count()-1; i++)
+            {
+                Console.Write($"{numbers[i]} ");
+            }
+            Console.WriteLine($"(Bonus: {numbers[numbers.Count()-1]})");
         }
 
         static void Main(string[] args)
@@ -138,3 +273,6 @@ namespace CorePortfolio05_JordanCheung
         }
     }
 }
+/* make sure if i run play lotto max it should be the same set of numbers and when i run the change they should be the same
+ make a print numbers
+     */
