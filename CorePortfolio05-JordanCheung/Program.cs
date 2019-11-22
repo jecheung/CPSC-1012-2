@@ -45,6 +45,7 @@ namespace CorePortfolio05_JordanCheung
             string choice = " ";
             List<int> lottoMAX = new List<int>();
             List<int> lotto649 = new List<int>();
+            List<int> lottoEXTRA = new List<int>();
             lottoMAX = generateMAX();
             lotto649 = generate649();
             lottoEXTRA = generateEXTRA();
@@ -65,23 +66,15 @@ namespace CorePortfolio05_JordanCheung
                         case "1":
                             
                             lottoMAX = changeLottoMAX(lottoMAX);
-                            
-                        /*    for (int i = 0; i < lottoMAX.Count()-1; i++)
-                            {
-                                Console.Write($"{lottoMAX[i]} ");
-                            }
-                            Console.WriteLine($"(Bonus: {lottoMAX[7]})");*/
-                            
                             break;
                         case "2":
                             lotto649 = changeLotto649(lotto649);
-                          
                             break;
                         case "3":
-                            Console.WriteLine("The current Lotto EXTRA winning numbers are: ");
+                            lottoEXTRA = changeLottoEXTRA(lottoEXTRA);
                             break;
                         case "4":
-                            Console.WriteLine("Play Lotto MAX");
+                            playMAX(lottoMAX, lottoEXTRA);
                             break;
                         case "5":
                             Console.WriteLine("Play Lotto 6/49");
@@ -97,6 +90,86 @@ namespace CorePortfolio05_JordanCheung
                 }
             }
         }
+
+        static void playMAX(List<int> lottonumbers, List<int> extra)
+        {
+            Console.Write("The current Lotto MAX winning numbers are: ");
+            displayLottoMAX(lottonumbers);
+            Console.Write("The current Lotto EXTRA winning numbers are: ");
+            displayLottoEXTRA(extra);
+            int count = 0;
+            bool bonus = false;
+            Console.Write("\nYour Lotto MAX quick pick numbers are: ");
+            List<int> quickpick = generateQuickMAX();
+            displayQuickLottoMAX(quickpick);
+            Console.Write("\nYour Lotto EXTRA number is: ");
+            List<int> quickExtra = generateEXTRA();
+            displayLottoEXTRA(quickExtra);
+            Console.Write("\n");
+            for (int i = 0; i < quickpick.Count()-1; i++)
+            {
+                if (quickpick.Contains(lottonumbers[i]))
+                    count++;
+            }
+            if (quickpick.Contains(lottonumbers[7])){
+                bonus = true;
+            }
+            if (bonus==true){
+                count++;
+                Console.Write($"Your Lotto MAX Match: {count} / 7");
+            }
+            else
+                Console.Write($"Your Lotto MAX Match: {count} / 7");
+            prizeMAX(count, bonus);
+            Console.Write("\n");
+        }
+
+        static void prizeMAX(int count, bool bonus)
+        {
+            Console.Write("\n");
+            if (count < 3)
+            {
+                Console.Write($"Your Lotto MAX Prize: Please play again");
+            }
+            else if (count == 3)
+            {
+                Console.Write($"Your Lotto MAX Prize: Free Play");
+            }
+            else if (count == 3 && bonus == true)
+            {
+                Console.Write($"Your Lotto MAX Prize: $20");
+            }
+            else if (count == 4)
+            {
+                Console.Write($"Your Lotto MAX Prize: $20");
+            }
+            else if (count == 4 && bonus == true)
+            {
+                Console.Write($"Your Lotto MAX Prize: Share of 2.75% of Pools Fund");
+            }
+            else if (count == 5)
+            {
+                Console.Write($"Your Lotto MAX Prize: Share of 3.5% of Pools Fund");
+            }
+            else if (count == 5 && bonus == true)
+            {
+                Console.Write($"Your Lotto MAX Prize: Share of 1.5% of Pools Fund");
+            }
+            else if (count == 6)
+            {
+                Console.Write($"Your Lotto MAX Prize: Share of 2.5% of Pools Fund");
+            }
+            else if (count == 6 && bonus == true)
+            {
+                Console.Write($"Your Lotto MAX Prize: Share of 2.5% of Pools Fund");
+            }
+            else if (count == 7)
+            {
+                Console.Write($"Your Lotto MAX Prize: Win or share Jackpot of at least $10 Million or 87.25% of Pools Fund");
+            }
+
+        }
+
         static List<int> generateEXTRA()
         {
             List<int> lottonumbers = new List<int>();
@@ -118,25 +191,21 @@ namespace CorePortfolio05_JordanCheung
             List<int> lottonumbers = new List<int>();
             Console.Write("The current Lotto EXTRA winning numbers are: ");
             displayLottoEXTRA(Current);
-            
-                Console.Write("The new Lotto 649 winning numbers are: ");
-                for (int i = 0; i < lottonumbers.Count-1; i++)
-                {
-                    Console.Write($"{lottonumbers[i]} ");
-                }
-                Console.WriteLine($"(Bonus: {lottonumbers[lottonumbers.Count()-1]})");
-
-            }
+            Console.Write("The new Lotto EXTRA winning numbers are: ");
+            lottonumbers = generateEXTRA();
+            displayLottoEXTRA(lottonumbers);
+            Console.Write("\n");
             return lottonumbers;
         }
+        
 
         static void displayLottoEXTRA(List<int> numbers)
         {
-            for (int i = 0; i < numbers.Count()-1; i++)
+            for (int i = 0; i < numbers.Count(); i++)
             {
                 Console.Write($"{numbers[i]}");
             }
-            Console.WriteLine($"(Bonus: {numbers[numbers.Count()-1]})");
+            Console.Write("\n");
         }
 
 
@@ -196,6 +265,7 @@ namespace CorePortfolio05_JordanCheung
                 Console.WriteLine($"(Bonus: {lottonumbers[lottonumbers.Count()-1]})");
 
             }
+            Console.Write("\n");
             return lottonumbers;
         }
 
@@ -220,8 +290,25 @@ namespace CorePortfolio05_JordanCheung
             }while (lottonumbers.Contains(randomNumb));
             lottonumbers.Add(randomNumb);
 
+            return lottonumbers;
+        }
 
+        static List<int> generateQuickMAX()
+        {
+            List<int> lottonumbers = new List<int>();
+            Random rnd = new Random();
+            int i = 0;
+            int randomNumb;
             
+            for(i = 0; i < 7; i++)
+            {
+                do {
+                    randomNumb = rnd.Next(1,51);                  
+                }while (lottonumbers.Contains(randomNumb));
+                lottonumbers.Add(randomNumb);
+                
+            }
+            lottonumbers.Sort();
             return lottonumbers;
         }
 
@@ -255,6 +342,7 @@ namespace CorePortfolio05_JordanCheung
                 Console.WriteLine($"(Bonus: {lottonumbers[7]})");
 
             }
+            Console.Write("\n");
             return lottonumbers;
         }
 
@@ -265,6 +353,16 @@ namespace CorePortfolio05_JordanCheung
                 Console.Write($"{numbers[i]} ");
             }
             Console.WriteLine($"(Bonus: {numbers[numbers.Count()-1]})");
+            
+        }
+
+        static void displayQuickLottoMAX(List<int> numbers)
+        {
+            for (int i = 0; i < numbers.Count(); i++)
+            {
+                Console.Write($"{numbers[i]} ");
+            }
+            
         }
 
         static void Main(string[] args)
