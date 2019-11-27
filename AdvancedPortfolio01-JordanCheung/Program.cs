@@ -24,8 +24,8 @@ namespace AdvancedPortfolio01_JordanCheung
             string myDir = "temp";
             string myFile = "test.txt";
             string myDirPath = @"C:\temp";
-            string path = @"C:\temp\test.txt";
-
+            //string path = @"C:\temp\test.txt";
+            string path = @"C:\Windows\Temp\test.txt";
             Console.WriteLine($"CurrentDirectory: {Environment.CurrentDirectory}\n");
             Console.WriteLine($"SystemDirectory: {Environment.SystemDirectory}\n");
             Console.WriteLine($"TempDirectory: {Environment.GetEnvironmentVariable("TEMP")}\n");
@@ -65,11 +65,12 @@ namespace AdvancedPortfolio01_JordanCheung
 
             List<string> wordsInFile = new List<string>();
             List<char> charsInWord = new List<char>();
-            int wordCount = 0;
+            //int wordCount = 0;
             char hiddenChar = '*'; 
-            bool WordIsHidden = true; //keep word as *
+            bool won = false;
             
-            var guessed = new List<char>(); //need a list for * to fill with correct characters
+            List<char> correctGuesses = new List<char>();
+            List<char> incorrectGuesses = new List<char>(); //need a list for * to fill with correct characters
             var retry = true; //play again?
 
             // check if File exists
@@ -98,30 +99,42 @@ namespace AdvancedPortfolio01_JordanCheung
                 }
                 Console.WriteLine("");
 
-               for (int i = 0; i < charsInWord.Count()-1; i++)
+               for (int i = 0; i < charsInWord.Count(); i++)
                 {
-                    guessed.Add(hiddenChar);
+                    correctGuesses.Add(hiddenChar);
                 }
                 Console.WriteLine("");
-
-                Console.Write("\n(Guess) Enter a Letter in word ");
-                for (int i = 0; i < guessed.Count(); i++)
+                while (!won)
                 {
-                    Console.Write($"{guessed[i]}" );
+                    Console.Write("\n(Guess) Enter a Letter in word ");
+                    for (int i = 0; i < correctGuesses.Count(); i++)
+                    {
+                        Console.Write($"{correctGuesses[i]}" );
+                    }
+                    Console.Write(" > ");
+                    char letter = char.Parse(Console.ReadLine());
+                    for (int i = 0; i < correctGuesses.Count(); i++)
+                    {
+                        if (charsInWord[i] == letter)
+                        {
+                            correctGuesses[i] = letter;
+                        }
+                        else if (incorrectGuesses.Contains(letter))
+                        {
+                            Console.WriteLine($"{letter} is not in the word");
+                        }
+                        else if (correctGuesses.Contains(letter))
+                        {
+                            Console.WriteLine($"{letter} is already in the word");
+                        }
+                        else
+                            incorrectGuesses.Add(letter);
+                    }
+                    if (!correctGuesses.Contains('*'))
+                    {
+                        won = true;
+                    }
                 }
-                Console.Write(" > ");
-                char letter = char.Parse(Console.ReadLine());
-                if (charsInWord.Contains(letter))
-                {
-                    
-                }
-                for (int i = 0; i < charsInWord.Count()-1; i++)
-                {
-                    if (charsInWord[i] == char)
-                    else
-                        Console.Write(hiddenChar);
-                }
-
             }
             else
             {
