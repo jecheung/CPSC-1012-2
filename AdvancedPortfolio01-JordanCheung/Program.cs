@@ -64,15 +64,14 @@ namespace AdvancedPortfolio01_JordanCheung
             }
 
             List<string> wordsInFile = new List<string>();
-            List<char> charsInWord = new List<char>();
+            
             //int wordCount = 0;
             char hiddenChar = '*'; 
-            bool won = false;
             
-            List<char> correctGuesses = new List<char>();
-            List<char> incorrectGuesses = new List<char>(); //need a list for * to fill with correct characters
-            var retry = true; //play again?
-
+            string playAgain = "y";
+            bool sessionDone = false;
+            //need a list for * to fill with correct characters
+            
             // check if File exists
             if (File.Exists(path))
             {
@@ -84,62 +83,86 @@ namespace AdvancedPortfolio01_JordanCheung
                     wordsInFile.Add(curLine);
                 }
                 reader.Close();
-                for(int i = 0; i < wordsInFile.Count(); i++)
-                {
-                    Console.WriteLine($"word index: {i}, word: {wordsInFile[i]}");
-                }
-                Console.WriteLine($"");
-                newRandNum = randNum.Next(0, wordsInFile.Count() - 1);
-                Console.WriteLine($"Random word index: {newRandNum}\n");
-                string data = wordsInFile[newRandNum];
-                charsInWord.AddRange(data);
-                for (int i = 0; i < charsInWord.Count(); i++)
-                {
-                    Console.WriteLine($"char index: {i}, char: {charsInWord[i]}");
-                }
-                Console.WriteLine("");
-
-               for (int i = 0; i < charsInWord.Count(); i++)
-                {
-                    correctGuesses.Add(hiddenChar);
-                }
-                Console.WriteLine("");
-                while (!won)
-                {
-                    Console.Write("\n(Guess) Enter a Letter in word ");
-                    for (int i = 0; i < correctGuesses.Count(); i++)
+                
+                do {
+                    List<char> correctGuesses = new List<char>();
+                    List<char> incorrectGuesses = new List<char>();
+                    List<char> charsInWord = new List<char>();
+                    List<char> correctlyGuess = new List<char>();
+                    bool won = false;
+                    for(int i = 0; i < wordsInFile.Count(); i++)
                     {
-                        Console.Write($"{correctGuesses[i]}" );
+                        Console.WriteLine($"word index: {i}, word: {wordsInFile[i]}");
                     }
-                    Console.Write(" > ");
-                    char letter = char.Parse(Console.ReadLine());
-                    for (int i = 0; i < correctGuesses.Count(); i++)
+                    Console.WriteLine($"");
+                    newRandNum = randNum.Next(0, wordsInFile.Count() - 1);
+                    Console.WriteLine($"Random word index: {newRandNum}\n");
+                    string data = wordsInFile[newRandNum];
+                    charsInWord.AddRange(data);
+                    for (int i = 0; i < charsInWord.Count(); i++)
                     {
-                        if (charsInWord[i] == letter)
+                        Console.WriteLine($"char index: {i}, char: {charsInWord[i]}");
+                    }
+                    Console.WriteLine("");
+
+                   for (int i = 0; i < charsInWord.Count(); i++)
+                    {
+                        correctGuesses.Add(hiddenChar);
+                    }
+                    Console.WriteLine("");
+                    while (!won)
+                    {
+                        Console.Write("\n(Guess) Enter a Letter in word ");
+                        for (int i = 0; i < correctGuesses.Count(); i++)
                         {
-                            correctGuesses[i] = letter;
+                            Console.Write($"{correctGuesses[i]}" );
                         }
-                        else if (incorrectGuesses.Contains(letter))
+                        Console.Write(" > ");
+                        char letter = char.Parse(Console.ReadLine());
+                        if (incorrectGuesses.Contains(letter))
                         {
                             Console.WriteLine($"{letter} is not in the word");
                         }
-                        else if (correctGuesses.Contains(letter))
-                        {
+                        else {
                             Console.WriteLine($"{letter} is already in the word");
                         }
-                        else
-                            incorrectGuesses.Add(letter);
+                        for (int i = 0; i < correctGuesses.Count(); i++)
+                        {
+                            if (charsInWord[i] == letter)
+                            {
+                                correctGuesses[i] = letter;
+                                correctlyGuess.Add(letter);
+                                break;
+                            }
+                            else
+                                incorrectGuesses.Add(letter);
+                        }
+
+
+                        if (!correctGuesses.Contains('*'))
+                        {
+                            won = true;
+                        }
                     }
-                    if (!correctGuesses.Contains('*'))
-                    {
-                        won = true;
-                    }
-                }
+                    do {
+                        Console.Write("Do you want to guess another word? Enter y or n > ");
+                        playAgain = Console.ReadLine();
+                        if ((playAgain == "y") || (playAgain == "n")){
+                            sessionDone = true;
+                        }
+                        else {
+                            Console.WriteLine($"\"{playAgain}\" is not a valid choice. Try Again.");
+                            sessionDone = false;
+                        }   
+                    }while (sessionDone != true);
+                }while (playAgain != "n");
             }
             else
             {
                 Console.WriteLine($"The filename {path} does not exist.");
             }
+
+            
         }
     }
 }
