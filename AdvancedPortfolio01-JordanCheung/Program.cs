@@ -26,9 +26,9 @@ namespace AdvancedPortfolio01_JordanCheung
             string myDirPath = @"C:\temp";
             //string path = @"C:\temp\test.txt";
             string path = @"C:\Windows\Temp\test.txt";
-            Console.WriteLine($"CurrentDirectory: {Environment.CurrentDirectory}\n");
-            Console.WriteLine($"SystemDirectory: {Environment.SystemDirectory}\n");
-            Console.WriteLine($"TempDirectory: {Environment.GetEnvironmentVariable("TEMP")}\n");
+          //  Console.WriteLine($"CurrentDirectory: {Environment.CurrentDirectory}\n");
+          //  Console.WriteLine($"SystemDirectory: {Environment.SystemDirectory}\n");
+          //  Console.WriteLine($"TempDirectory: {Environment.GetEnvironmentVariable("TEMP")}\n");
 
             //string fname = Path.Combine(Directory.GetCurrentDirectory(), "test.txt");
             if(Directory.Exists(myDirPath))
@@ -88,65 +88,76 @@ namespace AdvancedPortfolio01_JordanCheung
                     List<char> correctGuesses = new List<char>();
                     List<char> incorrectGuesses = new List<char>();
                     List<char> charsInWord = new List<char>();
-                    List<char> correctlyGuess = new List<char>();
                     bool won = false;
-                    for(int i = 0; i < wordsInFile.Count(); i++)
-                    {
-                        Console.WriteLine($"word index: {i}, word: {wordsInFile[i]}");
-                    }
-                    Console.WriteLine($"");
+                    int letterRevealed = 0;
+                    int missed = 0;
+                    string input;
+                    char letter;
+
                     newRandNum = randNum.Next(0, wordsInFile.Count() - 1);
-                    Console.WriteLine($"Random word index: {newRandNum}\n");
+                    Console.WriteLine($"I have picked a random word on IZ*ONE.\nYour task is to guess the correct word.\n");
                     string data = wordsInFile[newRandNum];
                     charsInWord.AddRange(data);
-                    for (int i = 0; i < charsInWord.Count(); i++)
+                  /*  for (int i = 0; i < charsInWord.Count(); i++)
                     {
                         Console.WriteLine($"char index: {i}, char: {charsInWord[i]}");
                     }
-                    Console.WriteLine("");
-
-                   for (int i = 0; i < charsInWord.Count(); i++)
+                    Console.WriteLine("");*/
+                    StringBuilder displayToPlayer = new StringBuilder(charsInWord.Count());
+                    for (int i = 0; i < charsInWord.Count(); i++)
                     {
-                        correctGuesses.Add(hiddenChar);
+                        displayToPlayer.Append(hiddenChar);
                     }
-                    Console.WriteLine("");
                     while (!won)
                     {
-                        Console.Write("\n(Guess) Enter a Letter in word ");
-                        for (int i = 0; i < correctGuesses.Count(); i++)
-                        {
-                            Console.Write($"{correctGuesses[i]}" );
-                        }
+                        Console.Write("(Guess) Enter a Letter in word ");
+                        Console.Write(displayToPlayer.ToString());
                         Console.Write(" > ");
-                        char letter = char.Parse(Console.ReadLine());
-                        if (incorrectGuesses.Contains(letter))
+                        input = Console.ReadLine();
+                        letter = input[0];
+                        if (correctGuesses.Contains(letter))
                         {
+                            Console.WriteLine($"{letter} is already in the word");
+                            continue;
+                        }
+                        /*else if (incorrectGuesses.Contains(letter)){
+                            Console.WriteLine($"{letter} is not in the word");
+                            missed++;
+                            continue;
+                        }*/
+
+                        if (charsInWord.Contains(letter))
+                        {
+                            correctGuesses.Add(letter);
+                            for (int i = 0; i < charsInWord.Count(); i++)
+                            {
+                                if (charsInWord[i] == letter)
+                                {
+                                    displayToPlayer[i] = charsInWord[i];
+                                    letterRevealed++;
+                                }
+                            }
+
+                            if (letterRevealed == charsInWord.Count())
+                                won = true;
+                        }
+                        else
+                        {
+                            incorrectGuesses.Add(letter);
+
                             Console.WriteLine($"{letter} is not in the word");
                         }
-                        else {
-                            Console.WriteLine($"{letter} is already in the word");
-                        }
-                        for (int i = 0; i < correctGuesses.Count(); i++)
-                        {
-                            if (charsInWord[i] == letter)
-                            {
-                                correctGuesses[i] = letter;
-                                correctlyGuess.Add(letter);
-                                break;
-                            }
-                            else
-                                incorrectGuesses.Add(letter);
-                        }
-
-
-                        if (!correctGuesses.Contains('*'))
-                        {
-                            won = true;
-                        }
+                        
                     }
+
+                    if (won)
+                        Console.WriteLine($"The word is {displayToPlayer.ToString()}. You missed {incorrectGuesses.Count()} times.");
+
+
                     do {
                         Console.Write("Do you want to guess another word? Enter y or n > ");
                         playAgain = Console.ReadLine();
+                        Console.WriteLine("");
                         if ((playAgain == "y") || (playAgain == "n")){
                             sessionDone = true;
                         }
@@ -161,7 +172,7 @@ namespace AdvancedPortfolio01_JordanCheung
             {
                 Console.WriteLine($"The filename {path} does not exist.");
             }
-
+            Console.WriteLine("Good-bye and thanks for playing my Hangman game.");
             
         }
     }
